@@ -2,29 +2,29 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 const Header = (props) => {
-  return(
+  return (
     <h1>{props.course.name}</h1>
   )
 }
 
 const Part = (props) => {
-  return(
+  return (
     <p>{props.part} {props.exercise}</p>
   )
 }
 
 const Content = (props) => {
-  return(
+  return (
     <div>
-      <Part part={props.course.parts[0].name} exercise={props.course.parts[0].exercises}/>
-      <Part part={props.course.parts[1].name} exercise={props.course.parts[1].exercises}/>
-      <Part part={props.course.parts[2].name} exercise={props.course.parts[2].exercises}/>
+      <Part part={props.course.parts[0].name} exercise={props.course.parts[0].exercises} />
+      <Part part={props.course.parts[1].name} exercise={props.course.parts[1].exercises} />
+      <Part part={props.course.parts[2].name} exercise={props.course.parts[2].exercises} />
     </div>
   )
 }
 
 const Total = (props) => {
-  return(
+  return (
     <p>Number of exercises {props.course.parts[0].exercises + props.course.parts[1].exercises + props.course.parts[2].exercises}</p>
   )
 }
@@ -49,15 +49,15 @@ const App = () => {
     ]
   }
 
-  
+
   return (
     <div>
-      <Header course={course}/>
+      <Header course={course} />
 
-      <Content course={course}/>
+      <Content course={course} />
 
-      <Total course={course}/>
-      
+      <Total course={course} />
+
     </div>
   )
 }
