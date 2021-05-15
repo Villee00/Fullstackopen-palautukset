@@ -1,5 +1,4 @@
 import React from 'react';
-import persons from '../services/persons'
 
 const Number = ({deletePerson, person }) => {
   return (
