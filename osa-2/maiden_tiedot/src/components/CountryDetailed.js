@@ -18,4 +18,4 @@ const CountryDetailed = ({ country }) => {
     );
 };
 
-export default CountryDetailed
+export default CountryDetailed;

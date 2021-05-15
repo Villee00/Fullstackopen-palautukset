@@ -11,7 +11,10 @@ const Coutries = ({ countries, coutryFilter, onClick }) => {
     );
   }
   else if (countriesFiltered.length > 1) {
-    const listOfCountries = countriesFiltered.map((country) => <li key={country.name}>{country.name}<button onClick={() => onClick(country.name)}>show</button></li>)
+    const listOfCountries = countriesFiltered.map((country) => 
+      <li key={country.name}>{country.name}
+      <button onClick={() => onClick(country.name)}>show</button>
+    </li>);
 
     return (
       <ul>
@@ -32,4 +35,4 @@ const Coutries = ({ countries, coutryFilter, onClick }) => {
   }
 
 };
-export default Coutries
+export default Coutries;
