@@ -50,32 +50,80 @@ beforeEach(async () => {
   await Blog.insertMany(initalBlogs)
 })
 
-test('blogs are retuned as json', async () => {
-  const response = await api.get('/api/blogs')
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
-})
-test('blogs return correct amount', async () => {
-  const response = await api.get('/api/blogs')
+describe('Blogs fetch requests', () => {
+  test('Blogs are retuned as json', async () => {
+    const response = await api.get('/api/blogs')
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+  })
+  test('Blogs return correct amount', async () => {
+    const response = await api.get('/api/blogs')
 
-  expect(response.body).toHaveLength(initalBlogs.length)
-})
+    expect(response.body).toHaveLength(initalBlogs.length)
+  })
 
-test('check blogs for id', async () => {
-  const response = await api.get('/api/blogs')
+  test('Check blogs for id', async () => {
+    const response = await api.get('/api/blogs')
 
-  const contents = response.body
-  contents.forEach((blog) => {
-    expect(blog.id).toBeDefined()
+    const contents = response.body
+    contents.forEach((blog) => {
+      expect(blog.id).toBeDefined()
+    })
   })
 })
 
-test('Add blog', async () => {
-  await api.post('/api/blogs')
-    .send(helper.newBlog)
+describe('Post requests for blogs', () => {
+  test('Add blog', async () => {
+    await api.post('/api/blogs')
+      .send(helper.newBlog)
 
-  const response = await helper.blogsInDB()
-  expect(response).toHaveLength(initalBlogs.length + 1)
+    const response = await helper.blogsInDB()
+    expect(response).toHaveLength(initalBlogs.length + 1)
+  })
+
+  test('Post without likes field', async () => {
+    const blogWithoutLikes = {
+      title: 'War stories',
+      author: 'Michael Pen',
+      url: 'Wikipedia.com',
+    }
+    const response = await api.post('/api/blogs')
+      .send(blogWithoutLikes)
+      .expect(201)
+
+    expect(response.body.likes).toBeDefined()
+  })
+
+  test('No title or ulr in POST object', async () => {
+    const blogUnfinished = {
+      author: 'Unfinished',
+      likes: 40,
+    }
+    const response = await api.post('/api/blogs')
+      .send(blogUnfinished)
+      .expect(400)
+  })
+})
+
+describe('Modify blogs', () => {
+  test('Delete one blog', async () => {
+    const blogs = await helper.blogsInDB()
+    const response = await api.delete(`/api/blogs/${blogs[0].id}`)
+      .expect(204)
+    expect(await helper.blogsInDB()).toHaveLength(initalBlogs.length - 1)
+  })
+
+  test('Modify likes on one blog', async () => {
+    const blogs = await helper.blogsInDB()
+    const data = {
+      likes: 80,
+    }
+    const response = await api.put(`/api/blogs/${blogs[0].id}`)
+      .send(data)
+      .expect(202)
+
+    expect(response.body.likes).toEqual(data.likes)
+  })
 })
 
 afterAll(() => {
