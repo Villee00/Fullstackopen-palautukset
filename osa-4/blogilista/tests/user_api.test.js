@@ -10,13 +10,14 @@ beforeEach(async () => {
   await User.deleteMany({})
   await User.insertMany(helper.intialUsers)
 })
-
-test('Get all the users', async () => {
-  await api.get('/api/users')
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
+describe('Get users', () => {
+  test('Get all the users', async () => {
+    await api.get('/api/users')
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+  })
 })
-describe('Post requests for blogs', () => {
+describe('Post requests for users', () => {
   test('Create user with too short username', async () => {
     const newUser = {
       username: '1',
