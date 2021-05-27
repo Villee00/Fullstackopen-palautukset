@@ -6,13 +6,18 @@ const helper = require('./test.helper')
 const api = supertest(app)
 const Blog = require('../models/blogi')
 
+let userToken
+
 beforeEach(async () => {
   await Blog.deleteMany({})
   const users = await helper.usersInDB()
   helper.initalBlogs.forEach((blog) => {
-    blog.user = users[0].id
+    blog.user = users[3].id
   })
   await Blog.insertMany(helper.initalBlogs)
+  const userReq = await api.post('/api/login')
+    .send(helper.userForToken)
+  userToken = `bearer ${userReq.body.token}`
 })
 
 describe('Blogs fetch requests', () => {
@@ -41,6 +46,8 @@ describe('Post requests for blogs', () => {
   test('Add blog', async () => {
     await api.post('/api/blogs')
       .send(helper.newBlog)
+      .set('Authorization', userToken)
+      .expect(201)
 
     const response = await helper.blogsInDB()
     expect(response).toHaveLength(helper.initalBlogs.length + 1)
@@ -54,6 +61,7 @@ describe('Post requests for blogs', () => {
     }
     const response = await api.post('/api/blogs')
       .send(blogWithoutLikes)
+      .set('Authorization', userToken)
       .expect(201)
 
     expect(response.body.likes).toBeDefined()
@@ -66,7 +74,14 @@ describe('Post requests for blogs', () => {
     }
     const response = await api.post('/api/blogs')
       .send(blogUnfinished)
+      .set('Authorization', userToken)
       .expect(400)
+  })
+
+  test('Add blog without user token', async () => {
+    const response = await api.post('/api/blogs')
+      .send(helper.newBlog)
+      .expect(401)
   })
 })
 
@@ -74,6 +89,7 @@ describe('Modify blogs', () => {
   test('Delete one blog', async () => {
     const blogs = await helper.blogsInDB()
     const response = await api.delete(`/api/blogs/${blogs[0].id}`)
+      .set('Authorization', userToken)
       .expect(204)
     expect(await helper.blogsInDB()).toHaveLength(helper.initalBlogs.length - 1)
   })
@@ -85,6 +101,7 @@ describe('Modify blogs', () => {
     }
     const response = await api.put(`/api/blogs/${blogs[0].id}`)
       .send(data)
+      .set('Authorization', userToken)
       .expect(202)
 
     expect(response.body.likes).toEqual(data.likes)

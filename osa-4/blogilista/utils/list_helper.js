@@ -14,7 +14,7 @@ const favoriteBlog = (blogs) => {
   return blogs.reduce(favorite, 0)
 }
 
-const mostBLogs = (blogs) => {
+const mostBlogs = (blogs) => {
   const author = (authors, blog) => {
     if (lodash.findIndex(authors, (o) => o.author === blog.author) !== -1) {
       const index = lodash.findIndex(authors, (o) => o.author === blog.author)
@@ -44,6 +44,6 @@ module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
-  mostBLogs,
+  mostBlogs,
   mostLikes,
 }

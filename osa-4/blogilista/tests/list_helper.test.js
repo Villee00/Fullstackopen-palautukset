@@ -62,9 +62,9 @@ const listWithOneBlog = [
 ]
 
 test('dummy returns one', () => {
-  const blogs = []
+  const emptyBlogs = []
 
-  const result = listHelper.dummy(blogs)
+  const result = listHelper.dummy(emptyBlogs)
   expect(result).toBe(1)
 })
 
@@ -94,7 +94,7 @@ describe('Favorite blogs', () => {
     })
   })
   test('person with most blogs', () => {
-    const result = listHelper.mostBLogs(blogs)
+    const result = listHelper.mostBlogs(blogs)
 
     expect(result).toEqual({ author: 'Robert C. Martin', blogs: 3 })
   })

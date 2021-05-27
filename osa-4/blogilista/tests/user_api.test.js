@@ -7,7 +7,7 @@ const User = require('../models/user')
 const api = supertest(app)
 
 beforeEach(async () => {
-  await User.deleteMany()
+  await User.deleteMany({})
   await User.insertMany(helper.intialUsers)
 })
 
@@ -16,43 +16,47 @@ test('Get all the users', async () => {
     .expect(200)
     .expect('Content-Type', /application\/json/)
 })
+describe('Post requests for blogs', () => {
+  test('Create user with too short username', async () => {
+    const newUser = {
+      username: '1',
+      name: 'Jarno',
+      password: 'Salasana',
+    }
 
-test('Create user with too short username', async () => {
-  const newUser = {
-    username: '1',
-    name: 'Jarno',
-    password: 'Salasana',
-  }
+    const userData = await api.post('/api/users')
+      .send(newUser)
+      .expect(400)
 
-  const userData = await api.post('/api/users')
-    .send(newUser)
-    .expect(400)
+    expect(userData.body.error).toBeDefined()
+  })
 
-  expect(userData.body.error).toBeDefined()
+  test('Too short password', async () => {
+    const newUser = {
+      username: 'Jarno22',
+      name: 'Jarno',
+      password: 's',
+    }
+
+    const userData = await api.post('/api/users')
+      .send(newUser)
+      .expect(400)
+
+    expect(userData.body.error).toBeDefined()
+  })
+
+  test('Post new user', async () => {
+    const newUser = {
+      username: 'Jarno22',
+      name: 'Keijo',
+      password: 'jarno123',
+    }
+
+    const userData = await api.post('/api/users')
+      .send(newUser)
+      .expect(200)
+  })
 })
-
-test('Too short password', async () => {
-  const newUser = {
-    username: 'Jarno22',
-    name: 'Jarno',
-    password: 's',
-  }
-
-  const userData = await api.post('/api/users')
-    .send(newUser)
-    .expect(400)
-
-  expect(userData.body.error).toBeDefined()
-})
-
-test('Post new user', async () => {
-  const newUser = {
-    username: 'Jarno22',
-    name: 'Jarno',
-    password: 's',
-  }
-})
-
 afterAll(() => {
   mongoose.connection.close()
 })

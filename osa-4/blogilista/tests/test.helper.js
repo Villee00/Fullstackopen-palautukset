@@ -69,10 +69,16 @@ const usersInDB = async () => {
   const users = await User.find({})
   return users.map((user) => user.toJSON())
 }
+
+const userForToken = {
+  username: 'Jarno22',
+  password: 'jarno123',
+}
 module.exports = {
   newBlog,
   blogsInDB,
   intialUsers,
   usersInDB,
   initalBlogs,
+  userForToken,
 }
