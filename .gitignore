@@ -149,3 +149,5 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+
+.eslintrc.js
