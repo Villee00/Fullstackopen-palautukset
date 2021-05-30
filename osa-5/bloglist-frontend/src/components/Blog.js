@@ -1,13 +1,12 @@
-import React, {useState} from 'react'
-import blogs from '../services/blogs'
+import React, { useState } from 'react'
 
-const Blog = ({ blog, handleLike, userID, removeBlog }) =>{ 
-  const [visible, setVisible] = useState(false) 
-  
-  const showInfo = {display: visible? '': 'none'}
-  const showNeededInfo = {display: visible? 'none': ''}
+const Blog = ({ blog, handleLike, userID, removeBlog }) => {
+  const [visible, setVisible] = useState(false)
 
-  const changeVisible = () =>{
+  const showInfo = { display: visible? '': 'none' }
+  const showNeededInfo = { display: visible? 'none': '' }
+
+  const changeVisible = () => {
     setVisible(!visible)
   }
 
@@ -21,10 +20,10 @@ const Blog = ({ blog, handleLike, userID, removeBlog }) =>{
   return(
     <div style={blogStyle}>
       <div style={showNeededInfo} onClick={changeVisible}>
-      {blog.title} {blog.author}
-      <button onClick={changeVisible}>show</button>
+        {blog.title} {blog.author}
+        <button onClick={changeVisible}>show</button>
       </div>
-      
+
       <div style={showInfo}>
         {blog.title} {blog.author}
         <button onClick={changeVisible}>hide</button>
