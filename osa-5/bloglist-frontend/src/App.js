@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
-import loginService from './services/login'
+import postLogin from './services/login'
 import Notification from './components/Notification'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
@@ -35,13 +35,14 @@ const App = () => {
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
-      const userData = await loginService.postLogin({ username,password, })
+      const userData = await postLogin({ username,password })
       setUser(userData)
       blogService.setToken(userData.token)
       setPassword('')
       setUserName('')
       window.localStorage.setItem('user', JSON.stringify(userData))
     } catch (error) {
+      console.log(error.message)
       setNotificationMessage('Wrong username or password')
 
       setTimeout(() => {
@@ -56,6 +57,11 @@ const App = () => {
       if(window.confirm(`Remove ${foundBlog.title} by ${foundBlog.author}?` )){
         await blogService.remove(id)
         setBlogs(blogs.filter((oldBlog) => oldBlog.id !== id))
+        setNotificationMessage(`Blog ${foundBlog.title} deleted!` )
+
+        setTimeout(() => {
+          setNotificationMessage(null)
+        },2000)
       }
     } catch (error) {
       notificationMessage('Blog is already deleted')
@@ -113,11 +119,11 @@ const App = () => {
       <form onSubmit={handleLogin}>
         <h2>Log in to blogs</h2>
         <Notification message={notificationMessage}/>
-        Username: <input type="text" value={username} onChange={({ target }) => setUserName(target.value)}/>
+        Username: <input type="text" id="username" value={username} onChange={({ target }) => setUserName(target.value)}/>
         <br/>
-        Password: <input type="password" value={password} onChange={({ target }) => setPassword(target.value)}/>
+        Password: <input type="password" id="password" value={password} onChange={({ target }) => setPassword(target.value)}/>
         <br/>
-        <button type="submit">login</button>
+        <button type="submit" id="login">login</button>
       </form>
     )
   }
@@ -127,10 +133,10 @@ const App = () => {
       <h1>blogs</h1>
       <Notification message={notificationMessage}/>
       {user.name} logged in
-      <button onClick={() => logout()}>Logout</button>
+      <button onClick={() => logout()} id='logout' >Logout</button>
 
       <h2>Create new blog</h2>
-      <Togglable buttonText="Create new blog" ref={blogFromRef}>
+      <Togglable id="create-blog" buttonText="Create new blog" ref={blogFromRef}>
         <BlogForm addBlog={createBlog}/>
       </Togglable>
 

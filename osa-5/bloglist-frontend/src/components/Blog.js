@@ -19,7 +19,7 @@ const Blog = ({ blog, handleLike, userID, removeBlog }) => {
   }
   return(
     <div style={blogStyle}>
-      <div style={showNeededInfo} onClick={changeVisible}>
+      <div style={showNeededInfo} onClick={changeVisible} className="defaultInfo">
         {blog.title} {blog.author}
         <button onClick={changeVisible}>show</button>
       </div>
@@ -28,9 +28,9 @@ const Blog = ({ blog, handleLike, userID, removeBlog }) => {
         {blog.title} {blog.author}
         <button onClick={changeVisible}>hide</button>
         <p>{blog.url}</p>
-        <p>Likes: {blog.likes} <button onClick={handleLike}>Like</button></p>
+        <p>Likes: {blog.likes} <button id="like-blog" onClick={handleLike}>Like</button></p>
         <p>{blog.user.name}</p>
-        {userID === blog.user.username ?<button onClick={removeBlog}>remove</button> : null }
+        {userID === blog.user.username ?<button id="delete-blog" onClick={removeBlog}>remove</button> : null }
       </div>
     </div>
   )
