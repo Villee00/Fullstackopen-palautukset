@@ -120,13 +120,17 @@ describe('Blog app', function() {
         })
         cy.visit('http://localhost:3000')
       })
-      it('Blogs are in correct order', function (){
+      it.only('Blogs are in correct order', function (){
 
         cy.get('.defaultInfo').then((btn) => {
           btn.click()
         })
 
-        cy.get('#blog-likes')
+        cy.get('.blogAllInfo').then((blog) => {
+          cy.wrap(blog[0]).contains('Likes: 150')
+          cy.wrap(blog[1]).contains('Likes: 30')
+        })
+
       })
     })
 
