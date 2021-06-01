@@ -120,7 +120,7 @@ describe('Blog app', function() {
         })
         cy.visit('http://localhost:3000')
       })
-      it.only('Blogs are in correct order', function (){
+      it('Blogs are in correct order', function (){
 
         cy.get('.defaultInfo').then((btn) => {
           btn.click()
