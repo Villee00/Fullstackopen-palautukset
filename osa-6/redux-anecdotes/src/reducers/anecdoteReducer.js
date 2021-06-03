@@ -24,13 +24,13 @@ const reducer = (state = initialState, action) => {
     case "VOTE":
       const id = action.data.id
       const anecdote = state.find(n => n.id === id)
-      const changedAnectode = {...anecdote, votes: anecdote.votes+1}
+      const changedAnectode = { ...anecdote, votes: anecdote.votes + 1 }
       return state.map(ane =>
-        ane.id !== id ? ane: changedAnectode).sort((a,b) => b.votes - a.votes)
+        ane.id !== id ? ane : changedAnectode).sort((a, b) => b.votes - a.votes)
 
     case "CREATE":
       return [...state, action.data]
-      
+
     default:
       break;
   }
@@ -38,17 +38,17 @@ const reducer = (state = initialState, action) => {
   return state
 }
 
-export const likeAnecdotes= (id) =>{
+export const likeAnecdotes = (id) => {
   return {
     type: "VOTE",
-    data:{
+    data: {
       id
     }
   }
 }
 
-export const newAnecdote = (content) =>{
-  return{
+export const newAnecdote = (content) => {
+  return {
     type: "CREATE",
     data: {
       content,
