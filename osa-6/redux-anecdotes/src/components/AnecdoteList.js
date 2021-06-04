@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { likeAnecdotes } from '../reducers/anecdoteReducer'
+import { likeAnecdotes, initializeAnecdotes } from '../reducers/anecdoteReducer'
+import anecdoteService from '../services/anecdotes'
 
 
 const AnecdoteList = () => {
@@ -10,11 +11,18 @@ const AnecdoteList = () => {
   const vote = (id) => {
     dispatch(likeAnecdotes(id))
   }
-
+  useEffect(() => {
+    anecdoteService.getAll()
+    .then(response =>{
+      dispatch(initializeAnecdotes(response))
+    })
+  }, [])
   return (
     <div>
-      {anecdotes.map(anecdote =>
-        <div key={anecdote.id}>
+      {anecdotes.map(anecdote =>{
+        console.log(anecdote)
+        return(
+          <div key={anecdote.id}>
           <div>
             {anecdote.content}
           </div>
@@ -23,6 +31,9 @@ const AnecdoteList = () => {
             <button onClick={() => vote(anecdote.id)}>vote</button>
           </div>
         </div>
+        )
+      }
+       
       )}
     </div>
   )
