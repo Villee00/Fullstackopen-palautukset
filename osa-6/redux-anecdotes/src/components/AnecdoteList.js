@@ -14,7 +14,7 @@ const AnecdoteList = () => {
     dispatch(setNotification(`Voted anecdote`))
     setTimeout(() =>{
       dispatch(setNotification(""))
-    }, 1000)
+    }, 5000)
   }
 
   useEffect(() => {
