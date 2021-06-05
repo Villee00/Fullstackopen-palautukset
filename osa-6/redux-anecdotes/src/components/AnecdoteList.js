@@ -10,11 +10,10 @@ const AnecdoteList = () => {
   const dispatch = useDispatch()
 
   const vote = (id) => {
-    dispatch(voteAnecdotes(id))
-    dispatch(setNotification(`Voted anecdote`))
-    setTimeout(() =>{
-      dispatch(setNotification(""))
-    }, 5000)
+    const anecdote = anecdotes.find(n => n.id === id)
+    
+    dispatch(voteAnecdotes({...anecdote, votes: anecdote.votes +1}))
+    dispatch(setNotification(`You voted '${anecdote.content}'`, 5))
   }
 
   useEffect(() => {
@@ -39,7 +38,6 @@ const AnecdoteList = () => {
         </div>
         )
       }
-       
       )}
     </div>
   )
