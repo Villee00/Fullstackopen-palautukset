@@ -18,7 +18,7 @@ const anecdoteReducer = (state = [], action) => {
   }
 }
 
-export const likeAnecdotes = (id) => {
+export const voteAnecdotes = (id) => {
   return {
     type: "VOTE",
     data: {
