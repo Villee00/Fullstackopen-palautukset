@@ -55,30 +55,21 @@ blogRouter.delete('/:id', userExtractor, async (request, response) => {
   }
 })
 
-blogRouter.put('/:id', userExtractor, async (request, response) => {
-  const { token } = request
+blogRouter.put('/:id', async (request, response) => {
   const { body } = request
-  const { user } = request
-
-  if (!token || user === undefined) {
-    return response.status(401).json({ error: 'token missing or invalid' })
-  }
 
   try {
     const blog = await Blog.findById(request.params.id)
-    if (blog.user.toString() === user.id.toString()) {
-      const newBlog = {
-        title: body.title || blog.title,
-        author: body.author || blog.author,
-        url: body.url || blog.url,
-        likes: body.likes || blog.likes,
-      }
-      const updateBlog = await Blog.findByIdAndUpdate(request.params.id, newBlog, { new: true })
 
-      response.status(202).json(updateBlog.toJSON())
-    } else {
-      return response.status(401).json({ error: 'Only the creator of this blog can edit this blog' })
+    const newBlog = {
+      title: body.title || blog.title,
+      author: body.author || blog.author,
+      url: body.url || blog.url,
+      likes: body.likes || blog.likes,
     }
+    const updateBlog = await Blog.findByIdAndUpdate(request.params.id, newBlog, { new: true })
+
+    response.json(updateBlog.toJSON())
   } catch (error) {
     response.status(400).json(error).end()
   }

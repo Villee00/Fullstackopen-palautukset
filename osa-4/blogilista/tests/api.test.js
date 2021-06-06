@@ -102,7 +102,7 @@ describe('Modify blogs', () => {
     const response = await api.put(`/api/blogs/${blogs[0].id}`)
       .send(data)
       .set('Authorization', userToken)
-      .expect(202)
+      .expect(200)
 
     expect(response.body.likes).toEqual(data.likes)
   })
