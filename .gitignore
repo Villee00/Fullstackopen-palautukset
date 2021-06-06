@@ -153,3 +153,4 @@ typings/
 .dynamodb/
 
 .eslintrc.js
+db.json
