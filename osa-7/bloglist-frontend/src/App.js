@@ -5,11 +5,11 @@ import postLogin from './services/login'
 import Notification from './components/Notification'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { changeNotification } from './reducers/notificationReducer'
+import { addLikeBlog, deleteBlog, initBlogs } from './reducers/blogsReducer'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
   const [username, setUserName] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -17,13 +17,12 @@ const App = () => {
   const dispatch = useDispatch()
 
   const blogFromRef = useRef()
+
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs.sort((currentBlog, nextBlog ) => {
-        return nextBlog.likes - currentBlog.likes
-      }))
-    )
-  }, [])
+    dispatch(initBlogs())
+  }, [dispatch])
+
+  const blogs = useSelector(state => state.blogs)
 
   useEffect(() => {
     const userData = window.localStorage.getItem('user')
@@ -52,13 +51,11 @@ const App = () => {
     try {
       const foundBlog = blogs.find(blog => blog.id === id)
       if(window.confirm(`Remove ${foundBlog.title} by ${foundBlog.author}?` )){
-        await blogService.remove(id)
-        setBlogs(blogs.filter((oldBlog) => oldBlog.id !== id))
+        dispatch(deleteBlog(id))
         dispatch(changeNotification(`Blog ${foundBlog.title} deleted!`))
       }
     } catch (error) {
       dispatch(changeNotification('Blog is already deleted'))
-      setBlogs(blogs.map((oldBlog) => oldBlog.id === id? null: oldBlog))
     }
   }
 
@@ -66,13 +63,7 @@ const App = () => {
     try {
       const blog = blogs.find(blog => blog.id === id)
       const newBlog = { ...blog, likes: blog.likes+=1 }
-      const returnedBlog = await blogService.update(newBlog)
-      returnedBlog.user = blog.user
-      setBlogs(blogs.map((oldBlog) => oldBlog.id === id? returnedBlog: oldBlog))
-
-      setBlogs(blogs.sort((currentBlog, nextBlog ) => {
-        return nextBlog.likes - currentBlog.likes
-      }))
+      dispatch(addLikeBlog(newBlog))
     } catch (error) {
       dispatch(changeNotification(`Error ${error.message}`))
     }
@@ -81,7 +72,6 @@ const App = () => {
   const createBlog = async (blogObject) => {
     try {
       const newBlog = await blogService.create(blogObject)
-      setBlogs(blogs.concat(newBlog.data))
       dispatch(changeNotification(`Added a new blog ${newBlog.data.title} by ${newBlog.data.author}`))
 
       blogFromRef.current.toggleHidden()
