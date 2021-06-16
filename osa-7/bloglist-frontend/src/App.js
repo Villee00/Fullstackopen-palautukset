@@ -27,14 +27,9 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    try {
-      dispatch(loginUser({ username,password }))
-      setPassword('')
-      setUserName('')
-
-    } catch (error) {
-      dispatch(changeNotification('Wrong username or password'))
-    }
+    dispatch(loginUser({ username,password }))
+    setPassword('')
+    setUserName('')
   }
 
   const removeBlog = async (id) => {

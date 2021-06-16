@@ -1,5 +1,6 @@
 import postLogin from '../services/login'
 import blogService from '../services/blogs'
+import { changeNotification } from './notificationReducer'
 
 const userReducer = (state = null, action) => {
   switch (action.type) {
@@ -15,15 +16,20 @@ const userReducer = (state = null, action) => {
 }
 
 export const loginUser = (user) => async dispatch => {
-  const userData = await postLogin(user)
-  blogService.setToken(userData.token)
-  window.localStorage.setItem('user', JSON.stringify(userData))
-  return dispatch({
-    type: 'SET_USER',
-    data:{
-      userData,
-    }
-  })
+  try {
+    const userData = await postLogin(user)
+    blogService.setToken(userData.token)
+    window.localStorage.setItem('user', JSON.stringify(userData))
+    return dispatch({
+      type: 'SET_USER',
+      data:{
+        userData,
+      }
+    })
+  } catch (error) {
+    dispatch(changeNotification('Wrong username or password'))
+  }
+
 }
 
 export const initUser = () => async dispatch => {
