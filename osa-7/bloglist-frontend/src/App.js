@@ -4,10 +4,14 @@ import blogService from './services/blogs'
 import Notification from './components/Notification'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
+import Users from './components/Users'
+import User from './components/User'
 import { useDispatch, useSelector } from 'react-redux'
 import { changeNotification } from './reducers/notificationReducer'
 import { addLikeBlog, deleteBlog, initBlogs } from './reducers/blogsReducer'
 import { initUser, loginUser, logoutUser } from './reducers/userReducer'
+import { BrowserRouter as Router,Route, Switch } from 'react-router-dom'
+import { initUsers } from './reducers/usersReducer'
 
 const App = () => {
   const [username, setUserName] = useState('')
@@ -20,7 +24,7 @@ const App = () => {
   useEffect(() => {
     dispatch(initBlogs())
     dispatch(initUser())
-
+    dispatch(initUsers())
   }, [dispatch])
   const blogs = useSelector(state => state.blogs)
   const user = useSelector(state => state.user)
@@ -82,7 +86,7 @@ const App = () => {
   }
 
   return (
-    <div>
+    <Router>
       <h1>blogs</h1>
       <Notification/>
       {user.name} logged in
@@ -93,16 +97,25 @@ const App = () => {
         <BlogForm addBlog={createBlog}/>
       </Togglable>
 
-
-      {blogs.map(blog =>
-        <Blog
-          key={blog.id}
-          blog={blog}
-          handleLike={() => sendBlogLike(blog.id)}
-          userID={user.username}
-          removeBlog={() => removeBlog(blog.id)}/>
-      )}
-    </div>
+      <Switch>
+        <Route path="/users/:id">
+          <User/>
+        </Route>
+        <Route path="/users">
+          <Users/>
+        </Route>
+        <Route path="/">
+          {blogs.map(blog =>
+            <Blog
+              key={blog.id}
+              blog={blog}
+              handleLike={() => sendBlogLike(blog.id)}
+              userID={user.username}
+              removeBlog={() => removeBlog(blog.id)}/>
+          )}
+        </Route>
+      </Switch>
+    </Router>
   )
 }
 
