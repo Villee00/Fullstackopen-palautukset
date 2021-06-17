@@ -5,6 +5,8 @@ const blogsReducer = (state = [], action) => {
     return action.blogs
   case 'LIKE_BLOG':
     return state.map(n => n.id === action.blog.id? action.blog: n)
+  case 'ADD_BLOG':
+    return state.concat(action.blog)
   case 'DELETE_BLOG':
     return state.filter(n => n.id !== action.id)
   default:
@@ -28,14 +30,20 @@ export const addLikeBlog = (blog) => (async disptach => {
     type:'LIKE_BLOG',
     blog
   })
-}
-)
+})
 export const deleteBlog = (id) => (async disptach => {
   await blogService.remove(id)
   return disptach({
     type:'DELETE_BLOG',
     id
   })
+})
+
+export const addBlog = (blogData) => async disptach => {
+  const blog = await blogService.create(blogData)
+  return disptach({
+    type:'ADD_BLOG',
+    blog
+  })
 }
-)
 export default blogsReducer
