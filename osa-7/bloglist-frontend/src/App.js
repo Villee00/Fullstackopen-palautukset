@@ -56,16 +56,21 @@ const App = () => {
     borderWidth: 1,
     marginBottom: 5
   }
+
+  const menuSytle ={
+    padding: 5
+  }
   return (
     <Router>
-      <h1>blogs</h1>
-      <Notification/>
-      {user.name} logged in
-      <button onClick={() => logout()} id='logout' >Logout</button>
-      <Togglable id="create-blog" buttonText="Create new blog" ref={blogFromRef}>
-        <BlogForm/>
-      </Togglable>
+      <div >
+        <Link style={menuSytle} to='/'>Blogs</Link>
+        <Link style={menuSytle} to='/users'>Users</Link>
+        {user.name} logged in
+        <button onClick={() => logout()} id='logout' >Logout</button>
+        <h1>blogs</h1>
+        <Notification/>
 
+      </div>
       <Switch>
         <Route path="/users/:id">
           <User/>
@@ -77,6 +82,9 @@ const App = () => {
           <Blog/>
         </Route>
         <Route path="/">
+          <Togglable id="create-blog" buttonText="Create new blog" ref={blogFromRef}>
+            <BlogForm/>
+          </Togglable>
           {blogs.map(blog =>
             <Link to={`/blogs/${blog.id}`} key={blog.id}>
               <p style={blogStyle}>{blog.title}</p>
