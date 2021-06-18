@@ -1,3 +1,4 @@
+import { List, ListItem, ListItemText, Typography } from '@material-ui/core'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
@@ -11,12 +12,14 @@ const User = () => {
   }
   return(
     <div>
-      <h2>{user.name}</h2>
-      <h3>Added blogs</h3>
-      <ul>
+      <Typography variant="body1" >User: {user.name}</Typography>
+      <Typography variant="h4">Added blogs</Typography>
+      <List>
         {user.blogs.map(n =>
-          <li key={n.id}>{n.title}</li>)}
-      </ul>
+          <ListItem key={n.id}>
+            <ListItemText primary={n.title}></ListItemText>
+          </ListItem>)}
+      </List>
     </div>
   )
 }

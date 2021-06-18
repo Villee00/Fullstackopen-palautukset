@@ -3,6 +3,18 @@ import { addComment, addLikeBlog, deleteBlog } from '../reducers/blogsReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { changeNotification } from '../reducers/notificationReducer'
 import { useHistory, useParams } from 'react-router-dom'
+import CommentIcon from '@material-ui/icons/Comment'
+import { Button,
+  Typography,
+  Card,
+  CardContent,
+  CardActionArea,
+  Link,
+  CardActions,
+  TextField,
+  List,
+  ListItem,
+  ListItemIcon } from '@material-ui/core'
 
 const Blog = () => {
   const dispatch = useDispatch()
@@ -27,7 +39,7 @@ const Blog = () => {
         history.push('/')
       }
     } catch (error) {
-      dispatch(changeNotification('Blog is already deleted'))
+      dispatch(changeNotification('Blog is already deleted', true))
     }
   }
 
@@ -36,7 +48,7 @@ const Blog = () => {
       const newBlog = { ...blog, likes: blog.likes+=1 }
       dispatch(addLikeBlog(newBlog))
     } catch (error) {
-      dispatch(changeNotification(`Error ${error.message}`))
+      dispatch(changeNotification(`Error ${error.message}`, true))
     }
   }
 
@@ -47,25 +59,53 @@ const Blog = () => {
     setComment('')
   }
 
-
   return(
     <div>
-      <h2>{blog.title} {blog.author}</h2>
-      <p>{blog.url}</p>
-      <p id="blog-likes">Likes: {blog.likes} <button id="like-blog" onClick={() => sendBlogLike()}>Like</button></p>
-      <p>{blog.user.name}</p>
-      {user === blog.user.username ?<button id="delete-blog" onClick={removeBlog}>remove</button> : null }
-      <br/>
-      <input
+      <Card>
+        <CardActionArea>
+          <CardContent>
+            <Typography gutterBottom variant="h3" component="h2">
+              {blog.title} - {blog.author}
+            </Typography>
+            <Link>
+              <Typography variant="h4" component="p">
+                {blog.url}
+              </Typography>
+            </Link>
+            <Typography variant="h5" component="p">
+              {blog.user.name}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+        <CardActions>
+          <Button variant="contained" size="small" color="primary" id="like-blog" onClick={() => sendBlogLike()}>
+          Like
+          </Button>
+          {user === blog.user.username ?
+            <Button id="delete-blog" variant="contained" size="small" color="secondary" onClick={removeBlog}>Delete</Button>
+            : null }
+          <Typography>
+          Likes: {blog.likes}
+          </Typography>
+        </CardActions>
+      </Card>
+      <TextField
+        label="Comment"
         value={comment}
-        onChange={({ target }) => setComment(target.value)}/>
-      <button onClick={sendBlogComment}>add comment</button>
+        onChange={({ target }) => setComment(target.value)}/><br/>
+      <Button  variant="contained" color="primary" onClick={sendBlogComment}>add comment</Button>
 
-      <h3>Comments</h3>
-      <ul>
+
+      <Typography variant="h5">Comments</Typography>
+      <List>
         {blog.comments.map((comment, index) =>
-          <li key={index}>{comment}</li>)}
-      </ul>
+          <ListItem key={index}>
+            <ListItemIcon>
+              <CommentIcon />
+            </ListItemIcon>
+            <Typography>{comment}</Typography>
+          </ListItem>)}
+      </List>
     </div>
   )
 }

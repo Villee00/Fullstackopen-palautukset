@@ -10,11 +10,14 @@ const notificationReducers = (state = null, action) => {
 }
 
 let timeoutID = null
-export const changeNotification = (notification) => {
+export const changeNotification = (notification, error =false) => {
   return dispatch => {
     dispatch({
       type: 'ADD_NOTIFICATION',
-      notification
+      notification: {
+        message: notification,
+        error
+      }
     })
     if(timeoutID){
       clearTimeout(timeoutID)

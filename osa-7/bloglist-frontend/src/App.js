@@ -11,6 +11,10 @@ import { initUser, loginUser, logoutUser } from './reducers/userReducer'
 import { BrowserRouter as Router,Route, Switch, Link } from 'react-router-dom'
 import { initUsers } from './reducers/usersReducer'
 
+import Container from '@material-ui/core/Container'
+import { Breadcrumbs, Button, Typography, List, ListItem,ListItemText } from '@material-ui/core'
+import { TextField } from '@material-ui/core'
+
 const App = () => {
   const [username, setUserName] = useState('')
   const [password, setPassword] = useState('')
@@ -39,60 +43,64 @@ const App = () => {
   if(user === null){
     return(
       <form onSubmit={handleLogin}>
-        <h2>Log in to blogs</h2>
+        <Typography variant="h2">Log in to blogs</Typography>
         <Notification/>
-        Username: <input type="text" id="username" value={username} onChange={({ target }) => setUserName(target.value)}/>
+        <TextField label="Username" id="username" value={username} onChange={({ target }) => setUserName(target.value)}/>
         <br/>
-        Password: <input type="password" id="password" value={password} onChange={({ target }) => setPassword(target.value)}/>
+        <TextField label="Password" type="password" id="password" value={password} onChange={({ target }) => setPassword(target.value)}/>
         <br/>
-        <button type="submit" id="login">login</button>
+        <Button variant="contained" color="primary" type="submit" id="login">login</Button>
       </form>
     )
-  }
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
   }
 
   const menuSytle ={
     padding: 5
   }
   return (
-    <Router>
-      <div >
-        <Link style={menuSytle} to='/'>Blogs</Link>
-        <Link style={menuSytle} to='/users'>Users</Link>
-        {user.name} logged in
-        <button onClick={() => logout()} id='logout' >Logout</button>
-        <h1>blogs</h1>
+    <Container>
+      <Router>
+        <Breadcrumbs separator="-">
+          <Link style={menuSytle} to='/'>Blogs</Link>
+          <Link style={menuSytle} to='/users'>Users</Link>
+          <Typography color="textPrimary">
+            {user.name} logged in
+          </Typography>
+          <Button variant="contained" color="secondary" onClick={() => logout()} id='logout' >Logout</Button>
+
+        </Breadcrumbs>
+        <Typography variant="h1" margin="10px">Blogs</Typography>
         <Notification/>
 
-      </div>
-      <Switch>
-        <Route path="/users/:id">
-          <User/>
-        </Route>
-        <Route path="/users">
-          <Users/>
-        </Route>
-        <Route path="/blogs/:id">
-          <Blog/>
-        </Route>
-        <Route path="/">
-          <Togglable id="create-blog" buttonText="Create new blog" ref={blogFromRef}>
-            <BlogForm/>
-          </Togglable>
-          {blogs.map(blog =>
-            <Link to={`/blogs/${blog.id}`} key={blog.id}>
-              <p style={blogStyle}>{blog.title}</p>
-            </Link>
-          )}
-        </Route>
-      </Switch>
-    </Router>
+
+        <Switch>
+          <Route path="/users/:id">
+            <User/>
+          </Route>
+          <Route path="/users">
+            <Users/>
+          </Route>
+          <Route path="/blogs/:id">
+            <Blog/>
+          </Route>
+          <Route path="/">
+            <Togglable id="create-blog" buttonText="Create new blog" ref={blogFromRef}>
+              <BlogForm/>
+            </Togglable>
+            <List>
+              {blogs.map(blog =>
+                <Link to={`/blogs/${blog.id}`} key={blog.id} >
+                  <ListItem button divider>
+                    <ListItemText primary={blog.title}/>
+                  </ListItem>
+                </Link>
+              )}
+            </List>
+
+          </Route>
+        </Switch>
+      </Router>
+    </Container>
   )
 }
 

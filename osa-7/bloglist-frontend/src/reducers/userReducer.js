@@ -27,7 +27,7 @@ export const loginUser = (user) => async dispatch => {
       }
     })
   } catch (error) {
-    dispatch(changeNotification('Wrong username or password'))
+    dispatch(changeNotification('Wrong username or password', true))
   }
 
 }

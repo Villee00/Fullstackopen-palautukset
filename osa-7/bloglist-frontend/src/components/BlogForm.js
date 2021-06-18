@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { addBlog } from '../reducers/blogsReducer'
 import { changeNotification } from '../reducers/notificationReducer'
-
+import { Button, TextField } from '@material-ui/core'
 const BlogForm = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
@@ -24,10 +24,10 @@ const BlogForm = () => {
 
   return(
     <form onSubmit={createBlog}>
-         Title: <input id='title' type="text" value={title} onChange={({ target }) => setTitle(target.value)}/><br/>
-            Author: <input id='author' type="text" value={author} onChange={({ target }) => setAuthor(target.value)}/><br/>
-            Url: <input id='url' type="text" value={url} onChange={({ target }) => setUrl(target.value)}/><br/>
-      <button id="create-blog-submit" type="submit">Create</button>
+      <TextField label="Title" id='title' type="text" value={title} onChange={({ target }) => setTitle(target.value)}/><br/>
+      <TextField label="Author" id='author' type="text" value={author} onChange={({ target }) => setAuthor(target.value)}/><br/>
+      <TextField label="Url" id='url' type="text" value={url} onChange={({ target }) => setUrl(target.value)}/><br/>
+      <Button id="create-blog-submit" type="submit" variant="contained" color="primary">Create</Button>
     </form>
   )
 }
