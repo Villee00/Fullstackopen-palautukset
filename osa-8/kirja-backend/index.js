@@ -1,6 +1,9 @@
 const { ApolloServer, gql } = require('apollo-server')
 const { v1: uuid } = require('uuid')
 
+const Book = require('./models/book')
+const Author = require('./models/author')
+
 let authors = [
   {
     name: 'Robert Martin',
@@ -88,8 +91,8 @@ const typeDefs = gql`
   type Book {
     title: String!
     published: Int!
-    author: String!
-    genres: [String!]
+    author: Author!
+    genres: [String!]!
     id: ID!
   }
 
@@ -115,7 +118,8 @@ const typeDefs = gql`
     ): Book
     editAuthor(
       name: String!
-      setBornTo: Int!
+      
+      : Int!
     ): Author
   }
 `
