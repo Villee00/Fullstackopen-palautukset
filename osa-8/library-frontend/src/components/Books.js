@@ -6,19 +6,20 @@ import { ALL_BOOKS } from '../queries'
 
 const Books = (props) => {
   const result = useQuery(ALL_BOOKS)
-  const [selectedGenres, setSelectedGenres] = useState("")
+  const [selectedGenres, setSelectedGenres] = useState({
+    value: "all", 
+    label: "all"})
 
   if (!props.show) {
     return null
   }
-
 
   if(result.loading){
     return(<p>Loading...</p>)
   }
   const books = result.data.allBooks
 
-  let genres = []
+  let genres = ["all"]
   books.map(book => genres.push(book.genres))
   const genreOptions = Array.from(new Set(genres.flat(1))).map(n => {
     return {
@@ -26,9 +27,10 @@ const Books = (props) => {
       label: n.toLowerCase()}
   })
   
-  const booksToShow = selectedGenres ===""?
-  books:
-  books.filter(book => book.genres.includes(selectedGenres.value))
+  const booksToShow = selectedGenres.value === "all"
+  ?books
+  :books.filter(book => book.genres.includes(selectedGenres.value))
+
   return (
     <div>
       <h2>books</h2>

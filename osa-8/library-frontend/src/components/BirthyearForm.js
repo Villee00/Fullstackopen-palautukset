@@ -26,7 +26,7 @@ const BirthyearForm = ({authors}) =>{
       <h3>Set birthyear</h3>
       Author:
       <select value={name} onChange={({target}) => setName(target.value)}>
-        {authors.map(n => <option value={n.name}>{n.name}</option>)}
+        {authors.map(n => <option key={n.name} value={n.name}>{n.name}</option>)}
       </select>
     <br/>
       Born: <input type="number" 
