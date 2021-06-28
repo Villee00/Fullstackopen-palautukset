@@ -19,6 +19,7 @@ const LoginForm = ({show, setToken, setPage}) =>{
       setToken(token)
       localStorage.setItem('library-token', token)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result.data])
 
 

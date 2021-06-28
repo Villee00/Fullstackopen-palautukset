@@ -1,5 +1,5 @@
 import { useApolloClient } from '@apollo/client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import LoginForm from './components/LoginForm'
@@ -17,6 +17,12 @@ const App = () => {
     client.clearStore()
   }
 
+  useEffect(() =>{
+    const tokenStore = localStorage.getItem('library-token')
+    if(tokenStore){
+      setToken(tokenStore)
+    }
+  }, [])
   return (
     <div>
       <div>
