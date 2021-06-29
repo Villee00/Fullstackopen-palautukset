@@ -12,6 +12,7 @@ const Recommend = (props) =>{
     if(!favoriteGenres.loading){
       getBooks({variables: {genre:favoriteGenres.data.me.favoriteGenre}})
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [favoriteGenres.loading, props.show])
 
   if(!props.show){

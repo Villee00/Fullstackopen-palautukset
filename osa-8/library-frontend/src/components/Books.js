@@ -1,23 +1,14 @@
-
-import { useQuery } from '@apollo/client'
 import React, { useState } from 'react'
 import Select from 'react-select'
-import { ALL_BOOKS } from '../queries'
 
-const Books = (props) => {
-  const result = useQuery(ALL_BOOKS)
+const Books = ({show, books}) => {
   const [selectedGenres, setSelectedGenres] = useState({
     value: "all", 
     label: "all"})
 
-  if (!props.show) {
+  if (!show) {
     return null
   }
-
-  if(result.loading){
-    return(<p>Loading...</p>)
-  }
-  const books = result.data.allBooks
 
   let genres = ["all"]
   books.map(book => genres.push(book.genres))
