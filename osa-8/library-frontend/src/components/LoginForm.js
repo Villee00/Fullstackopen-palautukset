@@ -3,13 +3,13 @@ import React, { useEffect, useState } from 'react'
 import { LOGIN_USER } from '../queries'
 
 
-const LoginForm = ({show, setToken, setPage}) =>{
+const LoginForm = ({show, setToken, setPage, notification}) =>{
   const [username, setUserName] = useState('')
   const [password, setPassword] = useState('')
 
   const [login, result ] = useMutation(LOGIN_USER,{
     onError: (error) => {
-      throw console.error(error.graphQLErrors[0].message)
+      throw notification(error.graphQLErrors[0].message)
     }
   })
 

@@ -4,14 +4,15 @@ import { ALL_BOOKS, CURRENT_USER } from '../queries'
 
 const Recommend = (props) =>{
   const favoriteGenres = useQuery(CURRENT_USER)
-  const [getBooks, {loading, data}] = useLazyQuery(ALL_BOOKS)
+  const [getBooks, {loading, data}] = useLazyQuery(ALL_BOOKS,{
+    fetchPolicy: 'no-cache'
+  })
 
   useEffect(() =>{
     if(!favoriteGenres.loading){
       getBooks({variables: {genre:favoriteGenres.data.me.favoriteGenre}})
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [favoriteGenres.loading])
+  }, [favoriteGenres.loading, props.show])
 
   if(!props.show){
     return null

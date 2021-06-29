@@ -5,16 +5,26 @@ import Books from './components/Books'
 import LoginForm from './components/LoginForm'
 import NewBook from './components/NewBook'
 import Recommend from './components/Recommend'
+import Notification from './components/Notification'
 
 const App = () => {
   const [page, setPage] = useState('authors')
   const [token, setToken] = useState(null)
+  const [notficationMessage, setNotificationMessage] = useState(null)
   const client = useApolloClient()
 
   const logout = () =>{
     setToken(null)
     localStorage.clear()
     client.clearStore()
+  }
+
+  const setNotification = (message) =>{
+    setNotificationMessage(message)
+
+    setTimeout(()=>{
+      setNotificationMessage(null)
+    }, 4000)
   }
 
   useEffect(() =>{
@@ -41,7 +51,7 @@ const App = () => {
         <button onClick={() => setPage('login')}>login</button>:
         <button onClick={() => logout()}>logout</button>
       }
-
+      <Notification message={notficationMessage}/>
       </div>
       <Authors
         show={page === 'authors'}
@@ -53,6 +63,7 @@ const App = () => {
 
       <NewBook
         show={page === 'add'}
+        notification={setNotification}
       />
 
       <Recommend
@@ -62,6 +73,7 @@ const App = () => {
         show={page === 'login'}
         setToken={setToken}
         setPage={setPage}
+        notification={setNotification}
       />
     </div>
   )
