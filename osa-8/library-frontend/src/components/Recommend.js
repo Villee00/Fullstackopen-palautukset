@@ -2,27 +2,27 @@ import { useLazyQuery, useQuery } from '@apollo/client'
 import React, { useEffect } from 'react'
 import { ALL_BOOKS, CURRENT_USER } from '../queries'
 
-const Recommend = (props) =>{
+const Recommend = (props) => {
   const favoriteGenres = useQuery(CURRENT_USER)
-  const [getBooks, {loading, data}] = useLazyQuery(ALL_BOOKS,{
+  const [getBooks, { loading, data }] = useLazyQuery(ALL_BOOKS, {
     fetchPolicy: 'no-cache'
   })
 
-  useEffect(() =>{
-    if(!favoriteGenres.loading){
-      getBooks({variables: {genre:favoriteGenres.data.me.favoriteGenre}})
+  useEffect(() => {
+    if (!favoriteGenres.loading) {
+      getBooks({ variables: { genre: favoriteGenres.data.me.favoriteGenre } })
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [favoriteGenres.loading, props.show])
 
-  if(!props.show){
+  if (!props.show) {
     return null
   }
 
-  if(favoriteGenres.loading || loading){
-    return(<p>Loading...</p>)
+  if (favoriteGenres.loading || loading) {
+    return (<p>Loading...</p>)
   }
-  return(
+  return (
     <div>
       <h1>Recommendations</h1>
       <p>Books that are match with your favorite genre</p>

@@ -17,16 +17,16 @@ const App = () => {
   const client = useApolloClient()
 
   const updateCacheWith = (addedBook) => {
-    const includedIn = (set, object) => 
-      set.map(p => p.id).includes(object.id)  
+    const includedIn = (set, object) =>
+      set.map(p => p.id).includes(object.id)
 
     const dataInStore = client.readQuery({ query: ALL_BOOKS })
     if (!includedIn(dataInStore.allBooks, addedBook)) {
       client.writeQuery({
         query: ALL_BOOKS,
-        data: { allBooks : [ ...dataInStore.allBooks, addedBook ] }
+        data: { allBooks: [...dataInStore.allBooks, addedBook] }
       })
-    }   
+    }
   }
 
   useSubscription(BOOK_ADDED, {
@@ -37,28 +37,28 @@ const App = () => {
     }
   })
 
-  const logout = () =>{
+  const logout = () => {
     setToken(null)
     localStorage.clear()
     client.clearStore()
   }
 
-  const setNotification = (message) =>{
+  const setNotification = (message) => {
     setNotificationMessage(message)
 
-    setTimeout(()=>{
+    setTimeout(() => {
       setNotificationMessage(null)
     }, 4000)
   }
 
-  useEffect(() =>{
+  useEffect(() => {
     const tokenStore = localStorage.getItem('library-token')
-    if(tokenStore){
+    if (tokenStore) {
       setToken(tokenStore)
     }
   }, [])
 
-  if(result_books.loading){
+  if (result_books.loading) {
     return <div>Loading...</div>
   }
   return (
@@ -66,20 +66,20 @@ const App = () => {
       <div>
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
-        {(token === null )?
-        null:
+        {(token === null) ?
+          null :
           <button onClick={() => setPage('add')}>add book</button>
         }
 
-        {(token === null )?
-        null:
+        {(token === null) ?
+          null :
           <button onClick={() => setPage('recommend')}>recommend</button>
         }
-        {(token === null )?
-        <button onClick={() => setPage('login')}>login</button>:
-        <button onClick={() => logout()}>logout</button>
-      }
-      <Notification message={notficationMessage}/>
+        {(token === null) ?
+          <button onClick={() => setPage('login')}>login</button> :
+          <button onClick={() => logout()}>logout</button>
+        }
+        <Notification message={notficationMessage} />
       </div>
       <Authors
         show={page === 'authors'}
@@ -98,9 +98,9 @@ const App = () => {
       />
 
       <Recommend
-        show={page==='recommend'}
+        show={page === 'recommend'}
       />
-      <LoginForm 
+      <LoginForm
         show={page === 'login'}
         setToken={setToken}
         setPage={setPage}

@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import Select from 'react-select'
 
-const Books = ({show, books}) => {
+const Books = ({ show, books }) => {
   const [selectedGenres, setSelectedGenres] = useState({
-    value: "all", 
-    label: "all"})
+    value: "all",
+    label: "all"
+  })
 
   if (!show) {
     return null
@@ -14,13 +15,14 @@ const Books = ({show, books}) => {
   books.map(book => genres.push(book.genres))
   const genreOptions = Array.from(new Set(genres.flat(1))).map(n => {
     return {
-      value: n, 
-      label: n.toLowerCase()}
+      value: n,
+      label: n.toLowerCase()
+    }
   })
-  
+
   const booksToShow = selectedGenres.value === "all"
-  ?books
-  :books.filter(book => book.genres.includes(selectedGenres.value))
+    ? books
+    : books.filter(book => book.genres.includes(selectedGenres.value))
 
   return (
     <div>
@@ -49,7 +51,7 @@ const Books = ({show, books}) => {
       <Select
         options={genreOptions}
         onChange={setSelectedGenres}
-        />
+      />
     </div>
   )
 }
