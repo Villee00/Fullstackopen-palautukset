@@ -83,6 +83,7 @@ const App = () => {
       </div>
       <Authors
         show={page === 'authors'}
+        setNotification={setNotification}
       />
 
       <Books

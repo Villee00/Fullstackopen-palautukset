@@ -3,7 +3,7 @@ import React from 'react'
 import { ALL_AUTHORS } from '../queries'
 import BirthyearForm from './BirthyearForm'
 
-const Authors = (props) => {
+const Authors = ({show, setNotification}) => {
   const result = useQuery(ALL_AUTHORS)
   
   if(result.loading){
@@ -12,7 +12,7 @@ const Authors = (props) => {
     )
   }
 
-  if (!props.show) {
+  if (!show) {
     return null
   }
   
@@ -40,7 +40,9 @@ const Authors = (props) => {
           )}
         </tbody>
       </table>
-      <BirthyearForm authors={authors}/>
+      <BirthyearForm 
+      authors={authors}
+      setNotification={setNotification}/>
     </div>
   )
 }

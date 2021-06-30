@@ -96,20 +96,17 @@ const resolvers = {
       }
       else if (args.author && args.genre) {
         return books.filter(n => n.author === args.author && n.genres.includes(args.genre))
-      } 
+      }
       return books
     },
 
-    allAuthors: async (root, args) =>{
+    allAuthors: async (root, args) => {
       return await Author.find({})
     },
 
-    me: (root, args, context) =>{
+    me: (root, args, context) => {
       return context.currentUser
     }
-  },
-  Author: {
-    bookCount: async (root) => await Book.countDocuments({author: root.id})
   },
   Mutation: {
     addBook: async (root, args, context) => {
@@ -120,11 +117,14 @@ const resolvers = {
 
       let author = await Author.findOne({ name: args.author })
       if (!author) {
-        const newAuthor = new Author({ name: args.author })
-        await newAuthor.save()
+        const newAuthor = new Author({ name: args.author, bookCount: 1 })
         author = newAuthor
       }
+      else {
+        author.bookCount += 1
+      }
 
+      await author.save()
       const newBook = new Book({ ...args, author: author })
       try {
         await newBook.save()
@@ -133,22 +133,22 @@ const resolvers = {
           invalidArgs: args,
         })
       }
-      pubsub.publish('BOOK_ADDED', {bookAdded: newBook})
+      pubsub.publish('BOOK_ADDED', { bookAdded: newBook })
       return newBook
     },
     editAuthor: async (root, args, context) => {
-
       const currentUser = context.currentUser
-      if(!currentUser){
+
+      if (!currentUser) {
         throw new AuthenticationError("You need to login before editing author")
       }
+
       try {
-        const author = await Author.findOneAndUpdate({ name: args.name }, { born: args.setBornTo })
+        const author = await Author.findOneAndUpdate({ name: args.name }, { born: args.setBornTo }, { new: true })
         if (!author) {
           return null
         }
         return author
-
       } catch (error) {
         throw new UserInputError(error.message, {
           invalidArgs: args,
@@ -169,16 +169,16 @@ const resolvers = {
     login: async (root, args) => {
       try {
         const foundUser = await User.findOne({ username: args.username })
-        
+
         if (!foundUser && args.password !== "secret") {
           throw new UserInputError("Cant find user or wrong password")
         }
-  
+
         const token = {
           username: foundUser.username,
           id: foundUser._id,
         }
-  
+
         return { value: jwt.sign(token, process.env.JWT_SECRET) }
       } catch (error) {
         throw new UserInputError(error.message, {

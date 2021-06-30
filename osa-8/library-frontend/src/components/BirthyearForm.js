@@ -3,9 +3,9 @@ import React, { useState } from "react"
 import { ALL_AUTHORS, EDIT_AUTHOR } from "../queries"
 
 
-const BirthyearForm = ({authors}) =>{
+const BirthyearForm = ({authors, setNotification}) =>{
   const [year, setYear] = useState('')
-  const [name, setName] = useState('')
+  const [name, setName] = useState('none')
 
   const [changeAuthor] = useMutation(EDIT_AUTHOR,
     {
@@ -14,7 +14,13 @@ const BirthyearForm = ({authors}) =>{
      console.log(error.graphQLErrors[0])
    }
  })
-  const submit = () =>{
+  const submit = (event) =>{
+    event.preventDefault()
+
+    if(name === "none"){
+      setNotification("You need to select an author to change the birthyear")
+      return
+    }
     const setBornTo = parseInt(year)
     changeAuthor({variables:{name, setBornTo}})
 
@@ -26,6 +32,7 @@ const BirthyearForm = ({authors}) =>{
       <h3>Set birthyear</h3>
       Author:
       <select value={name} onChange={({target}) => setName(target.value)}>
+      <option key="none" value="none">select an author</option>
         {authors.map(n => <option key={n.name} value={n.name}>{n.name}</option>)}
       </select>
     <br/>
