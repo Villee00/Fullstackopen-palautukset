@@ -6,7 +6,7 @@ import LoginForm from './components/LoginForm'
 import NewBook from './components/NewBook'
 import Recommend from './components/Recommend'
 import Notification from './components/Notification'
-import { ALL_BOOKS, BOOK_ADDED } from './queries'
+import { ALL_BOOKS, BOOK_ADDED, CURRENT_USER } from './queries'
 
 const App = () => {
 
@@ -21,11 +21,31 @@ const App = () => {
       set.map(p => p.id).includes(object.id)
 
     const dataInStore = client.readQuery({ query: ALL_BOOKS })
+
     if (!includedIn(dataInStore.allBooks, addedBook)) {
       client.writeQuery({
         query: ALL_BOOKS,
         data: { allBooks: [...dataInStore.allBooks, addedBook] }
       })
+    }
+    const dataInStoreUser = client.readQuery({ query: CURRENT_USER })
+    const favoriteGenre = dataInStoreUser.me.favoriteGenre
+
+    const dataInStoreFiltered = client.readQuery({ query: ALL_BOOKS,
+    variables:{
+      genre: favoriteGenre
+    } })
+
+    if(addedBook.genres.includes(favoriteGenre)){
+      if (!includedIn(dataInStoreFiltered.allBooks, addedBook)) {
+        client.writeQuery({
+          query: ALL_BOOKS,
+          variables:{
+            genre: favoriteGenre
+          },
+          data: {allBooks: [...dataInStoreFiltered.allBooks, addedBook]}
+        })
+      }
     }
   }
 

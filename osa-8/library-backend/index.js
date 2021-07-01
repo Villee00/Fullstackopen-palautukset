@@ -1,6 +1,5 @@
 require('dotenv').config()
 const { ApolloServer, gql, UserInputError, AuthenticationError, PubSub } = require('apollo-server')
-const { v1: uuid } = require('uuid')
 
 const Book = require('./models/book')
 const Author = require('./models/author')
