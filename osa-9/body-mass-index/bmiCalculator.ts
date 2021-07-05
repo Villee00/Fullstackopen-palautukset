@@ -36,4 +36,4 @@ const calculateBmi = (height: number, weight: number) =>{
   }
 };
 
-export {calculateBmi, parseArguments}
+export {calculateBmi, parseArguments};

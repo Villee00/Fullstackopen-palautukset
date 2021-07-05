@@ -6,14 +6,14 @@ interface result {
   ratingDescription: string,
   target: number,
   average: number
-};
+}
 
 const parseArgumentsCalc = (args: Array<string>) =>{
   if(args.length < 4){
     throw new Error('You need to give target and days values');
   }
 
-  const target = Number(args[2])
+  const target = Number(args[2]);
   if(isNaN(target)){
     throw new Error('target hours must be valid number');
   }
@@ -25,7 +25,7 @@ const parseArgumentsCalc = (args: Array<string>) =>{
     else{
       throw new Error('Only input numbers');
     }
-  }) 
+  }); 
   console.log(calculateExercises(target, days));
 };
 
@@ -61,4 +61,5 @@ const calculateExercises = (target: number, exerciseAmount: Array<number>) : res
   };
 };
 
-parseArgumentsCalc(process.argv);
+// parseArgumentsCalc(process.argv);
+export {calculateExercises, parseArgumentsCalc};
