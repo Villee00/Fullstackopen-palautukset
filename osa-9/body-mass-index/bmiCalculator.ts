@@ -1,3 +1,18 @@
+
+const parseArguments = (args: Array<string>) =>{
+  if(args.length !== 4){
+    throw new Error('Invalid amount of args') 
+  }
+  const height = Number(args[2])
+  const weight = Number(args[3])
+  if(!isNaN(height) && !isNaN(weight)){
+    console.log(calculateBmi(height, weight))
+  }
+  else{
+    throw new Error('Invailid input (values need to be numbers)')
+  }
+}
+
 const calculateBmi = (height: number, weight: number) =>{
   const bmi = weight/((height/100)^2)
   if(bmi > 30){
@@ -20,5 +35,9 @@ const calculateBmi = (height: number, weight: number) =>{
   }
 }
 
+try {
+  parseArguments(process.argv)
+} catch (error) {
+  console.log(error)
+}
 
-console.log(calculateBmi(180, 74))

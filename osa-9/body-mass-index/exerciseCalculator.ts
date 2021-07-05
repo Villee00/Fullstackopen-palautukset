@@ -8,6 +8,26 @@ interface result {
   average: number
 }
 
+const parseArgumentsCalc = (args: Array<string>) =>{
+  if(args.length < 4){
+    throw new Error('You need to give target and days values')
+  }
+
+  const target = Number(args[2])
+  if(isNaN(target)){
+    throw new Error('target hours must be valid number')
+  }
+
+  const days = args.slice(3).map(n => {
+    if(!isNaN(Number(n))){
+      return Number(n)
+    }
+    else{
+      throw new Error('Only input numbers')
+    }
+  }) 
+  console.log(calculateExercises(target, days))
+}
 
 const calculateExercises = (target: number, exerciseAmount: Array<number>) : result=> {
   let totalHoursTraining = 0
@@ -29,10 +49,11 @@ const calculateExercises = (target: number, exerciseAmount: Array<number>) : res
     rating = 3
     ratingDescription = "Good"
   }
+
   return{
     periodLength: exerciseAmount.length,
     trainingDays: exerciseAmount.filter(n => n > 0).length,
-    success: exerciseAmount.filter(n => n > 0).length > target,
+    success: average > target,
     rating: rating,
     ratingDescription: ratingDescription,
     target: target,
@@ -40,5 +61,4 @@ const calculateExercises = (target: number, exerciseAmount: Array<number>) : res
   }
 }
 
-
-console.log(calculateExercises(2,[3, 0, 2, 4.5, 0, 3, 1]))
+parseArgumentsCalc(process.argv)
