@@ -12,7 +12,6 @@ const validateName = (name:unknown):string =>{
   if(!isString(name)){
     throw new Error("Name is in invalid format");
   }
-
   return name;
 };
 
@@ -27,7 +26,6 @@ const validateSsn = (ssn:unknown):string =>{
   if(!isString(ssn)){
     throw new Error("Ssn is in invalid format");
   }
-
   return ssn;
 };
 
