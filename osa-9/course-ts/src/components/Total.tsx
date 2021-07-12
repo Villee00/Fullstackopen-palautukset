@@ -3,7 +3,6 @@ import {TotalProps} from '../../types'
 
 
 const Total = ({courseParts}: TotalProps) =>{
-
   return(
     <p>
     Number of exercises{" "}

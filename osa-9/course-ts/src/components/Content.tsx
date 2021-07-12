@@ -1,19 +1,12 @@
 import React from "react"
 import { TotalProps } from "../../types"
+import Part from "./Part"
 
 
 const Content = ({courseParts}: TotalProps) =>{
   return(
     <div>
-    <p>
-      {courseParts[0].name} {courseParts[0].exerciseCount}
-    </p>
-    <p>
-      {courseParts[1].name} {courseParts[1].exerciseCount}
-    </p>
-    <p>
-      {courseParts[2].name} {courseParts[2].exerciseCount}
-    </p>
+      {courseParts.map(course => <Part key={course.name} course={course}/>)}
   </div>
   )
 }
