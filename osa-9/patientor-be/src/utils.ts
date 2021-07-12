@@ -52,6 +52,7 @@ const toNewPatient = ({name, dateOfBirth, ssn, gender, occupation}:Fields): NewP
     ssn: validateSsn(ssn),
     gender: validateGender(gender),
     occupation: validateOccupation(occupation),
+    entries: []
   };
 
   return newPatient;

@@ -18,4 +18,18 @@ router.post('/', (req, res) =>{
     res.status(404).send(error.message);
   }
 });
+
+router.get('/:id', (req, res) =>{
+  const patient = patientsService.getPatient(req.params.id);
+
+  if(patient){
+    res.json(patientsService.getPatient(req.params.id));
+  }
+  else{
+    res.json({
+      error: "User with that id was not found"
+    });
+  }
+  
+});
 export default router;

@@ -3,7 +3,6 @@ import { NonSensitivePatientsEntries, PatientsEntery, NewPatientEntire } from ".
 import {v1 as uuid} from 'uuid';
 
 const getEnteries = (): Array<PatientsEntery> => {
-  console.log(patientsList);
   return patientsList;
 };
 
@@ -29,4 +28,8 @@ const addPatient = (patent: NewPatientEntire): PatientsEntery=> {
   return newPatient;
 };
 
-export default {getNonSensitiveEntries, getEnteries, addPatient};
+const getPatient = (id: string): PatientsEntery | undefined =>{
+  return getEnteries().find(n => n.id === id);
+};
+
+export default {getNonSensitiveEntries, getEnteries, addPatient, getPatient};
