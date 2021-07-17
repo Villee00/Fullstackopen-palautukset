@@ -26,7 +26,7 @@ router.get('/:id', (req, res) =>{
     res.json(patientsService.getPatient(req.params.id));
   }
   else{
-    res.json({
+    res.status(404).json({
       error: "User with that id was not found"
     });
   }
