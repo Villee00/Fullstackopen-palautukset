@@ -9,13 +9,13 @@ const app = express();
 app.use(json());
 app.use(cors());
 
-app.get('/api/ping', (_req,res)=>{
+app.get('/api/ping', (_req, res) => {
   res.send('pong');
 });
 
 app.use('/api/diagnoses', diagnosesRouter);
 app.use('/api/patients', patientsRouter);
 
-app.listen(PORT, ()=>{
-  console.log(`app started at ${PORT}` );
+app.listen(PORT, () => {
+  console.log(`app started at ${PORT}`);
 });

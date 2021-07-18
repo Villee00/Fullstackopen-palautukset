@@ -19,6 +19,6 @@ export interface PatientsEntery {
   entries: Entery[]
 }
 
-export type NonSensitivePatientsEntries = Omit<PatientsEntery,'ssn' | 'entries'>;
+export type NonSensitivePatientsEntries = Omit<PatientsEntery, 'ssn' | 'entries'>;
 
 export type NewPatientEntire = Omit<PatientsEntery, "id">;
