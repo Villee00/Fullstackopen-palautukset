@@ -1,6 +1,6 @@
-import { DiagnosesEntery } from "../src/types";
+import { Diagnosis } from "../src/types";
 
-export const diagnosesList: Array<DiagnosesEntery> = [
+export const diagnosesList: Array<Diagnosis> = [
   {
     code: "M24.2",
     name: "Disorder of ligament",
