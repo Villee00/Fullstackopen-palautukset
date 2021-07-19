@@ -6,9 +6,8 @@ import { setPatientInformation, useStateValue } from "../state";
 import { Patient } from "../types";
 
 const PatientInformation = () =>{
-  const [{ patient }, dispatch] = useStateValue();
+  const [{ patient, diagnosis }, dispatch] = useStateValue();
   const {id} = useParams<{id:string}>();
-
 
   useEffect(() =>{
     const fetchPatient = async () =>{
@@ -36,6 +35,17 @@ const PatientInformation = () =>{
       <h2>{patient.name}</h2>
       <p>ssn: {patient.ssn}</p>
       <p>occupation: {patient.occupation}</p>
+      <h3>Entries</h3>
+      {patient.entries.map((entry) =>{
+        return(
+          <div key={entry.id}>
+            <p>{entry.date} {entry.description}</p>
+            <ul>
+            {entry.diagnosisCodes?.map(n => <li key={n}>{n} {diagnosis[n]}</li>)}
+            </ul>
+          </div>
+        );
+      })}
     </div>
   );
 };
