@@ -1,12 +1,13 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import EntryDetails from "./EntryDetails";
 import { apiBaseUrl } from "../constants";
 import { setPatientInformation, useStateValue } from "../state";
 import { Patient } from "../types";
 
 const PatientInformation = () =>{
-  const [{ patient, diagnosis }, dispatch] = useStateValue();
+  const [{ patient }, dispatch] = useStateValue();
   const {id} = useParams<{id:string}>();
 
   useEffect(() =>{
@@ -36,16 +37,8 @@ const PatientInformation = () =>{
       <p>ssn: {patient.ssn}</p>
       <p>occupation: {patient.occupation}</p>
       <h3>Entries</h3>
-      {patient.entries.map((entry) =>{
-        return(
-          <div key={entry.id}>
-            <p>{entry.date} {entry.description}</p>
-            <ul>
-            {entry.diagnosisCodes?.map(n => <li key={n}>{n} {diagnosis[n]}</li>)}
-            </ul>
-          </div>
-        );
-      })}
+      {patient.entries.map((entry) =>
+      <EntryDetails key={entry.id} entry={entry}/>)}
     </div>
   );
 };
