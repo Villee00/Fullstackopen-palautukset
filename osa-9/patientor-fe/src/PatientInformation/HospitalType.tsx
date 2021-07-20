@@ -10,7 +10,7 @@ const HospitalType: React.FC<{entry:HospitalEntry}> = ({entry}) =>{
       <b>Discharged</b>
       <p>{entry.discharge.date} {entry.discharge.criteria}</p>
       <ul>
-      {entry.diagnosisCodes?.map(n => <li key={n}>{n} {diagnosis[n]}</li>)}
+      {entry.diagnosisCodes?.map(n => <li key={n}>{n} {diagnosis[n].name}</li>)}
       </ul>
     </div>
   );
