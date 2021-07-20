@@ -57,6 +57,19 @@ export const patientsList: Array<PatientsEntery> = [
         startDate: '2019-08-05',
         endDate: '2019-08-28'
       }
+    },
+    {
+      id: 'd811e46d-70b3-4d90-b090-4535c7cf8fb1',
+      date: '2015-01-02',
+      type: 'Hospital',
+      specialist: 'MD House',
+      diagnosisCodes: ['S62.5'],
+      description:
+        "Healing time appr. 2 weeks. patient doesn't remember how he got the injury.",
+      discharge: {
+        date: '2015-01-16',
+        criteria: 'Thumb has healed.',
+      }
     }]
   },
   

@@ -1,4 +1,11 @@
-import { NewPatientEntire } from "./types";
+import { BaseEntryWithoutId, discharge, Entry, EntryWithoutId, HealthCheckRating, NewPatientEntire, sickLeave } from "./types";
+
+
+export const assertNever = (value: never): never => {
+  throw new Error(
+    `Unhandled discriminated union member: ${JSON.stringify(value)}`
+  );
+};
 
 const isString = (value: unknown): value is string => {
   return typeof value === 'string' || value instanceof String;
@@ -43,9 +50,45 @@ const validateOccupation = (occupation: unknown): string => {
   return occupation;
 };
 
+const validateEmployer = (employerName: unknown): string =>{
+  if (!isString(employerName)) {
+    throw new Error("Employer is in invalid format");
+  }
+  return employerName;
+};
+
+const validateHealthCheckRating = (healthCheckRating: HealthCheckRating): HealthCheckRating =>{
+  if (!healthCheckRating) {
+    throw new Error("Health Check Rating of birthday is in wrong format");
+  }
+  return healthCheckRating;
+};
+
+const validateSickLeave = (sickLeave: sickLeave): sickLeave => {
+  if (!isString(sickLeave.startDate) || !isDate(sickLeave.startDate)) {
+    throw new Error("sickLeave of birthday is in wrong format");
+  }
+  if (!isString(sickLeave.endDate) || !isDate(sickLeave.endDate)) {
+    throw new Error("sickLeave of birthday is in wrong format");
+  }
+  return sickLeave;
+};
+
+const validateDischarge = (discharge: discharge ): discharge =>{
+  if(discharge)
+  if(!isDate(discharge.date) || !isString(discharge.date)){
+    throw new Error("discharge is in invalid format");
+  }
+  if(!isString(discharge.criteria)){
+    throw new Error("discharge is in invalid format");
+  }
+  return discharge;
+};
+
+
 type Fields = { name: string, dateOfBirth: string, ssn: string, gender: string, occupation: string };
 
-const toNewPatient = ({ name, dateOfBirth, ssn, gender, occupation }: Fields): NewPatientEntire => {
+export const toNewPatient = ({ name, dateOfBirth, ssn, gender, occupation }: Fields): NewPatientEntire => {
   const newPatient: NewPatientEntire = {
     name: validateName(name),
     dateOfBirth: validateDateOfBirth(dateOfBirth),
@@ -58,4 +101,42 @@ const toNewPatient = ({ name, dateOfBirth, ssn, gender, occupation }: Fields): N
   return newPatient;
 };
 
-export default toNewPatient;
+export const toNewEntry = (props:Entry):EntryWithoutId =>{
+
+  const newEntry:BaseEntryWithoutId = {
+    description: props.description,
+    date: props.date,
+    specialist: props.specialist,
+    diagnosisCodes: props.diagnosisCodes,
+  };
+
+  switch(props.type){
+    case "Hospital":
+      return {
+        ...newEntry,
+        type: props.type,
+        discharge: validateDischarge(props.discharge)
+      };
+    case "OccupationalHealthcare":
+      if(props.sickLeave === undefined){
+        throw new Error("sickLeave is in invalid format");
+      }
+      return {
+        ...newEntry,
+        type: props.type,
+        employerName: validateEmployer(props.employerName),
+        sickLeave: validateSickLeave(props.sickLeave),
+      };
+    case "HealthCheck":
+      return {
+        ...newEntry,
+        type: props.type,
+        healthCheckRating: validateHealthCheckRating(props.healthCheckRating),
+      };
+    default:
+      return assertNever(props);
+  }
+};
+
+
+

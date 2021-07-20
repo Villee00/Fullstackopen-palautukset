@@ -1,6 +1,6 @@
 import express from "express";
 import patientsService from '../services/patientsService';
-import toNewPatient from '../utils';
+import { toNewPatient, toNewEntry } from '../utils';
 
 const router = express.Router();
 
@@ -31,5 +31,25 @@ router.get('/:id', (req, res) => {
     });
   }
 
+});
+router.post('/:id/entries', (req, res) => {
+  const patient = patientsService.getPatient(req.params.id);
+
+  if (patient) {
+    try {
+      const entry = toNewEntry(req.body);
+      const updatePatient = patientsService.addEntry(patient, entry);
+      res.json(updatePatient);
+    } catch {
+      res.status(404).json({
+        error: "Invalid format"
+      });
+    }
+  }
+  else {
+    res.status(404).json({
+      error: "User with that id was not found"
+    });
+  }
 });
 export default router;
