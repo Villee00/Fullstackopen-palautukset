@@ -4,6 +4,7 @@ import { HealthCheckEntry } from "../types";
 
 const HealthCheckType: React.FC<{entry:HealthCheckEntry}> = ({entry}) =>{
   const [{diagnosis}] = useStateValue();
+
   return(
     <div>
       <h4>{entry.date} {entry.description}</h4>

@@ -10,7 +10,6 @@ interface Props {
   onCancel: () => void;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
   const [{ diagnosis }] = useStateValue();
   return (
@@ -68,7 +67,7 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
             diagnoses={Object.values(diagnosis)}
           />    
           <Button type="button" onClick={onCancel} color="red">Cancel</Button>
-          <Button type="submit"
+          <Button type="submit" color="purple"
           disabled={!dirty || !isValid}>Submit</Button>
         </Form>
       );
