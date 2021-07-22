@@ -35,10 +35,10 @@ const PatientInformation = () =>{
     );
   }
 
-  const onSubmit = async (values: EntryFormValues) =>{
+  const onSubmit = async (values: EntryFormValues ) =>{
     const sendData = {...values, type:"HealthCheck"};
-    const {data: newPatient} = await axios.post<Patient>(`${apiBaseUrl}/${patient.id}/entries`, sendData);
-    console.log(newPatient);
+    const {data: newPatient} = await axios.post<Patient>(`${apiBaseUrl}/patients/${patient.id}/entries`, sendData);
+    dispatch(setPatientInformation(newPatient));
   };
 
   const onCancel = () =>{
