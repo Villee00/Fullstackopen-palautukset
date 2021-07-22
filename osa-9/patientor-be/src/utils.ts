@@ -118,15 +118,21 @@ export const toNewEntry = (props:Entry):EntryWithoutId =>{
         discharge: validateDischarge(props.discharge)
       };
     case "OccupationalHealthcare":
-      if(props.sickLeave === undefined){
-        throw new Error("sickLeave is in invalid format");
+      if(props.sickLeave) {
+        return {
+          ...newEntry,
+          type: props.type,
+          employerName: validateEmployer(props.employerName),
+          sickLeave: validateSickLeave(props.sickLeave),
+        };
       }
-      return {
-        ...newEntry,
-        type: props.type,
-        employerName: validateEmployer(props.employerName),
-        sickLeave: validateSickLeave(props.sickLeave),
-      };
+      else{
+        return {
+          ...newEntry,
+          type: props.type,
+          employerName: validateEmployer(props.employerName),
+        };
+      }
     case "HealthCheck":
       return {
         ...newEntry,

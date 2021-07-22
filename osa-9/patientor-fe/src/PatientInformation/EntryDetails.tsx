@@ -5,14 +5,14 @@ import { Entry } from "../types";
 import assertNever from "../components/AssertNever";
 import HealthCheckType from "./HealthCheckType";
 
-const EntryDetails: React.FC<{entry:Entry}> = ({entry}):JSX.Element=> {
-  switch(entry.type){
+const EntryDetails: React.FC<{ entry: Entry }> = ({ entry }): JSX.Element => {
+  switch (entry.type) {
     case "Hospital":
-      return <HospitalEntryDetail entry={entry}/>;
+      return <HospitalEntryDetail entry={entry} />;
     case "OccupationalHealthcare":
-      return <OccupationalHealthcareType entry={entry}/>;
+      return <OccupationalHealthcareType entry={entry} />;
     case "HealthCheck":
-      return <HealthCheckType entry={entry}/>;
+      return <HealthCheckType entry={entry} />;
     default:
       return assertNever(entry);
   }

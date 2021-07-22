@@ -65,7 +65,7 @@ export type Entry =
   | HealthCheckEntry;
 
 export type EntryFormValues = Omit<Entry, "id" | "type">;
-
+export type OccupationalEntryFormValues = Omit<OccupationalHealthcareEntry, "id" | "type">;
 export interface Patient {
   id: string;
   name: string;

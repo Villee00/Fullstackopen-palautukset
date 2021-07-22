@@ -21,8 +21,8 @@ const App = () => {
           `${apiBaseUrl}/patients`
         );
         dispatch(setPatientList(patientListFromApi));
-        
-        const {data: diagnosisData} = await axios.get<Diagnosis[]>(`${apiBaseUrl}/diagnosis`);
+
+        const { data: diagnosisData } = await axios.get<Diagnosis[]>(`${apiBaseUrl}/diagnosis`);
         dispatch(setDiagnosis(diagnosisData));
       } catch (e) {
         console.error(e);
@@ -42,13 +42,12 @@ const App = () => {
           <Divider hidden />
           <Switch>
             <Route path="/:id">
-              <PatientInformation/>
+              <PatientInformation />
             </Route>
             <Route path="/">
               <PatientListPage />
             </Route>
           </Switch>
-
         </Container>
       </Router>
     </div>
